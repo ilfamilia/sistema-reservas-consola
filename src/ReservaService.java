@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ReservaService {
@@ -10,8 +8,13 @@ public class ReservaService {
         reservas = new ArrayList<>();
     }
 
-    public void crearReserva(String nombre, LocalDate fecha, LocalTime hora) {
-        reservas.add(new Reserva(nombre, fecha, hora));
+    public boolean crearReserva(Reserva r) {
+        if (r == null) return false;
+
+        if (buscarReserva(r.getId()) != null) return false;
+
+        reservas.add(r);
+        return true;
     }
 
     public Reserva buscarReserva(int id) {
@@ -24,14 +27,17 @@ public class ReservaService {
         return null;
     }
 
-    public void eliminarReserva(int id) {
-        reservas.remove(id);
+    public boolean eliminarReserva(int id) {
+        Reserva r = buscarReserva(id);
+
+        if (r == null) return false;
+
+        reservas.remove(r);
+
+        return true;
     }
 
-    public void listarReservas() {
-        for (Reserva r : reservas) {
-            System.out.println("------------------------");
-            System.out.println(r);
-        }
+    public ArrayList<Reserva> listarReservas() {
+        return new ArrayList<>(reservas);
     }
 }
