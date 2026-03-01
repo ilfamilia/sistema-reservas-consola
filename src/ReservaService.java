@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class ReservaService {
@@ -25,6 +27,19 @@ public class ReservaService {
         }
 
         return null;
+    }
+
+    public boolean actualizarReserva(int id, String nombre, LocalDate fecha, LocalTime hora) {
+
+        Reserva r = buscarReserva(id);
+
+        if (r == null) return false;
+
+        r.setNombre(nombre);
+        r.setFecha(fecha);
+        r.setHora(hora);
+
+        return true;
     }
 
     public boolean eliminarReserva(int id) {
