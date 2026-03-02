@@ -105,8 +105,10 @@ public class Main {
 
                 return fecha;
 
+            } catch (NumberFormatException e) {
+                System.out.println("\nDebes escribir números.\n");
             } catch (DateTimeException e) {
-                System.out.println("\nFecha inválida. Intente de nuevo.");
+                System.out.println("\nFecha inválida. Intente de nuevo.\n");
             }
         }
     }
@@ -129,8 +131,10 @@ public class Main {
 
                 return hora;
 
+            } catch (NumberFormatException e) {
+                System.out.println("\nDebes escribir números.\n");
             } catch (DateTimeException e) {
-                System.out.println("\nHora inválida. Intente de nuevo.");
+                System.out.println("\nHora inválida. Intente de nuevo.\n");
             }
         }
     }
