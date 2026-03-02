@@ -1,6 +1,7 @@
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -34,6 +35,22 @@ public class Main {
                         System.out.println("\nNo se pudo crear la reserva.");
                     }
 
+                    break;
+                }
+
+                case 2: {
+                    System.out.println("\n--- Mostrar todas las Reservas ---");
+                    ArrayList<Reserva> todas = service.listarReservas();
+
+                    if (todas.isEmpty()) {
+                        System.out.println("\nNo hay reservas registradas.");
+                    } else {
+                        System.out.println("Total: " + todas.size());
+                        for (Reserva r : todas) {
+                            System.out.println("--------------------");
+                            System.out.println(r);
+                        }
+                    }
                     break;
                 }
 
