@@ -72,6 +72,19 @@ public class Main {
                     break;
                 }
 
+                case 5: {
+                    System.out.println("\n--- Eliminar reserva ---");
+                    int id = leerEntero(sc, "ID de reserva a eliminar: ");
+
+                    boolean operacionValida = service.eliminarReserva(id);
+                    if (operacionValida) {
+                        System.out.println("\n Reserva eliminada correctamente.");
+                    } else {
+                        System.out.println("\nNo existe una reserva con ese ID.");
+                    }
+                    break;
+                }
+
                 case 6:
                     System.out.println("\nSaliendo...");
                     break;
