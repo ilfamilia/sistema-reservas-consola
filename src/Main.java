@@ -72,6 +72,33 @@ public class Main {
                     break;
                 }
 
+                case 4: {
+                    System.out.println("\n--- Modificar reserva ---");
+                    int id = leerEntero(sc, "ID de reserva a actualizar: ");
+
+                    Reserva actual = service.buscarReserva(id);
+
+                    if (actual == null) {
+                        System.out.println("\nNo existe una reserva con ese ID.");
+                        break;
+                    }
+
+                    System.out.println("Reserva actual:\n" + actual);
+                    System.out.println("\nIntroduce los nuevos datos: ");
+
+                    String nombre = leerTexto(sc, "Nombre: ");
+                    LocalDate fecha = leerFecha(sc, "Año: ", "Mes: ", "Día: ");
+                    LocalTime hora = leerHora(sc, "Hora: ", "Minutos: ");
+
+                    boolean operacionValida = service.actualizarReserva(id, nombre, fecha, hora);
+                    if (operacionValida) {
+                        System.out.println("\nActualizada correctamente.");
+                    } else {
+                        System.out.println("\nNo se pudo actualizar.");
+                    }
+                    break;
+                }
+
                 case 5: {
                     System.out.println("\n--- Eliminar reserva ---");
                     int id = leerEntero(sc, "ID de reserva a eliminar: ");
