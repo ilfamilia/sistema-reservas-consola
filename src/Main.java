@@ -11,6 +11,10 @@ public class Main {
 
         ReservaService service = new ReservaService();
 
+        service.crearReserva(new Reserva("Israel", LocalDate.of(2025, 3, 12), LocalTime.of(1, 3)));
+        service.crearReserva(new Reserva("Jimi Hendrix", LocalDate.of(2027, 5, 21), LocalTime.of(13, 33)));
+        service.crearReserva(new Reserva("Stephen Curry", LocalDate.of(2028, 3, 8), LocalTime.of(20, 30)));
+
         int opcion;
 
         do {
@@ -50,6 +54,20 @@ public class Main {
                             System.out.println("--------------------");
                             System.out.println(r);
                         }
+                    }
+                    break;
+                }
+
+                case 3: {
+                    System.out.println("\n--- Buscar reserva ---");
+                    int id = leerEntero(sc, "ID a buscar: ");
+
+                    Reserva encontrada = service.buscarReserva(id);
+
+                    if (encontrada == null) {
+                        System.out.println("\nNo se encontró ninguna reserva con ese ID.");
+                    } else {
+                        System.out.println("\nEncontrada:\n" + encontrada);
                     }
                     break;
                 }
