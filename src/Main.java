@@ -105,7 +105,7 @@ public class Main {
 
                     boolean operacionValida = service.eliminarReserva(id);
                     if (operacionValida) {
-                        System.out.println("\n Reserva eliminada correctamente.");
+                        System.out.println("\nReserva eliminada correctamente.");
                     } else {
                         System.out.println("\nNo existe una reserva con ese ID.");
                     }
