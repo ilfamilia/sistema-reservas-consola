@@ -5,19 +5,32 @@ import java.util.ArrayList;
 public class ReservaService {
 
     private ArrayList<Reserva> reservas;
+    private String ultimoError;
 
     public ReservaService() {
         reservas = new ArrayList<>();
     }
 
     public boolean crearReserva(Reserva r) {
-        if (r == null) return false;
+        if (r == null) {
+            ultimoError = "La reserva es null.";
+            return false;
+        }
 
-        if (buscarReserva(r.getId()) != null) return false;
+        if (buscarReserva(r.getId()) != null) {
+            ultimoError = "Ya existe una reserva con ese ID.";
+            return false;
+        }
 
-        if (!esFechaHoraValida(r.getFecha(), r.getHora())) return false;
+        if (!esFechaHoraValida(r.getFecha(), r.getHora())) {
+            ultimoError = "No se permiten reservas con fecha u hora pasada.";
+            return false;
+        }
 
-        if (hayConflicto(r.getFecha(), r.getHora(), null)) return false;
+        if (hayConflicto(r.getFecha(), r.getHora(), null)) {
+            ultimoError = "Ya existe una reserva en ese horario.";
+            return false;
+        }
 
         reservas.add(r);
         return true;
@@ -37,11 +50,20 @@ public class ReservaService {
 
         Reserva r = buscarReserva(id);
 
-        if (r == null) return false;
+        if (r == null) {
+            ultimoError = "No existe una reserva con ese ID.";
+            return false;
+        }
 
-        if (!esFechaHoraValida(fecha, hora)) return false;
+        if (!esFechaHoraValida(fecha, hora)) {
+            ultimoError = "No se permiten reservas con fecha u hora pasada.";
+            return false;
+        }
 
-        if (hayConflicto(fecha, hora, id)) return false;
+        if (hayConflicto(fecha, hora, id)) {
+            ultimoError = "Ya existe una reserva en ese horario.";
+            return false;
+        }
 
         r.setNombre(nombre);
         r.setFecha(fecha);
@@ -53,7 +75,10 @@ public class ReservaService {
     public boolean eliminarReserva(int id) {
         Reserva r = buscarReserva(id);
 
-        if (r == null) return false;
+        if (r == null) {
+            ultimoError = "No existe una reserva con ese ID.";
+            return false;
+        }
 
         reservas.remove(r);
 
@@ -79,6 +104,10 @@ public class ReservaService {
         }
 
         return true;
+    }
+
+    public String getUltimoError() {
+        return ultimoError;
     }
 
     private boolean hayConflicto(LocalDate fecha, LocalTime hora, Integer idAIgnorar) {

@@ -37,6 +37,7 @@ public class Main {
                         System.out.println("\nReserva creada correctamente.");
                     } else {
                         System.out.println("\nNo se pudo crear la reserva.");
+                        System.out.println(service.getUltimoError());
                     }
 
                     break;
@@ -95,6 +96,7 @@ public class Main {
                         System.out.println("\nActualizada correctamente.");
                     } else {
                         System.out.println("\nNo se pudo actualizar.");
+                        System.out.println(service.getUltimoError());
                     }
                     break;
                 }
@@ -107,7 +109,8 @@ public class Main {
                     if (operacionValida) {
                         System.out.println("\nReserva eliminada correctamente.");
                     } else {
-                        System.out.println("\nNo existe una reserva con ese ID.");
+                        System.out.println();
+                        System.out.println(service.getUltimoError());
                     }
                     break;
                 }
