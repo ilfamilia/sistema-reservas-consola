@@ -40,6 +40,8 @@ public class Main {
                         System.out.println(service.getUltimoError());
                     }
 
+                    pausa(sc);
+
                     break;
                 }
 
@@ -56,6 +58,9 @@ public class Main {
                             System.out.println(r);
                         }
                     }
+
+                    pausa(sc);
+
                     break;
                 }
 
@@ -70,6 +75,9 @@ public class Main {
                     } else {
                         System.out.println("\nEncontrada:\n" + encontrada);
                     }
+
+                    pausa(sc);
+
                     break;
                 }
 
@@ -98,6 +106,9 @@ public class Main {
                         System.out.println("\nNo se pudo actualizar.");
                         System.out.println(service.getUltimoError());
                     }
+
+                    pausa(sc);
+
                     break;
                 }
 
@@ -109,9 +120,12 @@ public class Main {
                     if (operacionValida) {
                         System.out.println("\nReserva eliminada correctamente.");
                     } else {
-                        System.out.println();
+                        System.out.println("\nNo se pudo eliminar la reserva.");
                         System.out.println(service.getUltimoError());
                     }
+
+                    pausa(sc);
+
                     break;
                 }
 
@@ -121,6 +135,7 @@ public class Main {
 
                 default:
                     System.out.println("\nOpción inválida. Intenta de nuevo.");
+                    pausa(sc);
             }
 
         } while (opcion != 6);
@@ -215,6 +230,11 @@ public class Main {
                 System.out.println("\nHora inválida. Intente de nuevo.\n");
             }
         }
+    }
+
+    private static void pausa(Scanner sc) {
+        System.out.print("\nPresiona Enter para continuar...");
+        sc.nextLine();
     }
 
 }
