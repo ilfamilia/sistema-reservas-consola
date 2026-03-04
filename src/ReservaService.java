@@ -13,9 +13,9 @@ public class ReservaService {
     public boolean crearReserva(Reserva r) {
         if (r == null) return false;
 
-        if (!esFechaHoraValida(r.getFecha(), r.getHora())) return false;
-
         if (buscarReserva(r.getId()) != null) return false;
+
+        if (!esFechaHoraValida(r.getFecha(), r.getHora())) return false;
 
         reservas.add(r);
         return true;
