@@ -17,6 +17,8 @@ public class ReservaService {
 
         if (!esFechaHoraValida(r.getFecha(), r.getHora())) return false;
 
+        if (hayConflicto(r.getFecha(), r.getHora(), null)) return false;
+
         reservas.add(r);
         return true;
     }
@@ -38,6 +40,8 @@ public class ReservaService {
         if (r == null) return false;
 
         if (!esFechaHoraValida(fecha, hora)) return false;
+
+        if (hayConflicto(fecha, hora, id)) return false;
 
         r.setNombre(nombre);
         r.setFecha(fecha);
@@ -75,6 +79,18 @@ public class ReservaService {
         }
 
         return true;
+    }
+
+    private boolean hayConflicto(LocalDate fecha, LocalTime hora, Integer idAIgnorar) {
+        for (Reserva r : reservas) {
+            boolean mismoHorario = r.getFecha().isEqual(fecha) && r.getHora().equals(hora);
+            boolean esLaMisma = (idAIgnorar != null) && (r.getId() == idAIgnorar);
+
+            if (mismoHorario && !esLaMisma) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
