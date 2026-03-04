@@ -11,7 +11,7 @@ public class Main {
 
         ReservaService service = new ReservaService();
 
-        service.crearReserva(new Reserva("Israel", LocalDate.of(2025, 3, 12), LocalTime.of(1, 3)));
+        service.crearReserva(new Reserva("Steve Vai", LocalDate.of(2025, 3, 12), LocalTime.of(1, 3)));
         service.crearReserva(new Reserva("Jimi Hendrix", LocalDate.of(2027, 5, 21), LocalTime.of(13, 33)));
         service.crearReserva(new Reserva("Stephen Curry", LocalDate.of(2028, 3, 8), LocalTime.of(20, 30)));
 

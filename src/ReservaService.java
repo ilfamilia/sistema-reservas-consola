@@ -13,6 +13,8 @@ public class ReservaService {
     public boolean crearReserva(Reserva r) {
         if (r == null) return false;
 
+        if (!esFechaHoraValida(r.getFecha(), r.getHora())) return false;
+
         if (buscarReserva(r.getId()) != null) return false;
 
         reservas.add(r);
@@ -35,6 +37,8 @@ public class ReservaService {
 
         if (r == null) return false;
 
+        if (!esFechaHoraValida(fecha, hora)) return false;
+
         r.setNombre(nombre);
         r.setFecha(fecha);
         r.setHora(hora);
@@ -55,4 +59,22 @@ public class ReservaService {
     public ArrayList<Reserva> listarReservas() {
         return new ArrayList<>(reservas);
     }
+
+    private boolean esFechaHoraValida(LocalDate fecha, LocalTime hora) {
+        if (fecha == null || hora == null) return false;
+
+        LocalDate hoy = LocalDate.now();
+
+        // Fecha pasada
+        if (fecha.isBefore(hoy)) return false;
+
+        // Si es hoy, la hora debe ser ahora o después
+        if (fecha.isEqual(hoy)) {
+            LocalTime ahora = LocalTime.now();
+            if (hora.isBefore(ahora)) return false;
+        }
+
+        return true;
+    }
+
 }
