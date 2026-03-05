@@ -7,6 +7,9 @@ public class ReservaService {
     private ArrayList<Reserva> reservas;
     private String ultimoError;
 
+    private static final LocalTime HORA_APERTURA = LocalTime.of(8, 0);
+    private static final LocalTime HORA_CIERRE = LocalTime.of(18, 0);
+
     public ReservaService() {
         reservas = new ArrayList<>();
     }
@@ -23,7 +26,11 @@ public class ReservaService {
         }
 
         if (!esFechaHoraValida(r.getFecha(), r.getHora())) {
-            ultimoError = "No se permiten reservas con fecha u hora pasada.";
+            if (!esHorarioPermitido(r.getHora())) {
+                ultimoError = "Horario no permitido. Solo se aceptan reservas de 08:00 a 18:00.";
+            } else {
+                ultimoError = "No se permiten reservas con fecha u hora pasada.";
+            }
             return false;
         }
 
@@ -56,7 +63,11 @@ public class ReservaService {
         }
 
         if (!esFechaHoraValida(fecha, hora)) {
-            ultimoError = "No se permiten reservas con fecha u hora pasada.";
+            if (!esHorarioPermitido(hora)) {
+                ultimoError = "Horario no permitido. Solo se aceptan reservas de 08:00 a 18:00.";
+            } else {
+                ultimoError = "No se permiten reservas con fecha u hora pasada.";
+            }
             return false;
         }
 
@@ -92,6 +103,8 @@ public class ReservaService {
     private boolean esFechaHoraValida(LocalDate fecha, LocalTime hora) {
         if (fecha == null || hora == null) return false;
 
+        if (!esHorarioPermitido(hora)) return false;
+
         LocalDate hoy = LocalDate.now();
 
         // Fecha pasada
@@ -104,6 +117,12 @@ public class ReservaService {
         }
 
         return true;
+    }
+
+    private boolean esHorarioPermitido(LocalTime hora) {
+        if (hora == null) return false;
+
+        return !hora.isBefore(HORA_APERTURA) && !hora.isAfter(HORA_CIERRE);
     }
 
     public String getUltimoError() {
