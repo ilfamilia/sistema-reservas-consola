@@ -28,6 +28,8 @@ public class ReservaService {
         if (!esFechaHoraValida(r.getFecha(), r.getHora())) {
             if (!esHorarioPermitido(r.getHora())) {
                 ultimoError = "Horario no permitido. Solo se aceptan reservas de 08:00 a 18:00.";
+            } else if (!esIntervaloValido(r.getHora())) {
+                ultimoError = "Las reservas solo pueden hacerse en intervalos de 30 minutos (00 o 30).";
             } else {
                 ultimoError = "No se permiten reservas con fecha u hora pasada.";
             }
@@ -65,6 +67,8 @@ public class ReservaService {
         if (!esFechaHoraValida(fecha, hora)) {
             if (!esHorarioPermitido(hora)) {
                 ultimoError = "Horario no permitido. Solo se aceptan reservas de 08:00 a 18:00.";
+            } else if (!esIntervaloValido(hora)) {
+                ultimoError = "Las reservas solo pueden hacerse en intervalos de 30 minutos (00 o 30).";
             } else {
                 ultimoError = "No se permiten reservas con fecha u hora pasada.";
             }
@@ -105,6 +109,8 @@ public class ReservaService {
 
         if (!esHorarioPermitido(hora)) return false;
 
+        if (!esIntervaloValido(hora)) return false;
+
         LocalDate hoy = LocalDate.now();
 
         // Fecha pasada
@@ -123,6 +129,13 @@ public class ReservaService {
         if (hora == null) return false;
 
         return !hora.isBefore(HORA_APERTURA) && !hora.isAfter(HORA_CIERRE);
+    }
+
+    private boolean esIntervaloValido(LocalTime hora) {
+        if (hora == null) return false;
+
+        int minutos = hora.getMinute();
+        return minutos == 0 || minutos == 30;
     }
 
     public String getUltimoError() {
