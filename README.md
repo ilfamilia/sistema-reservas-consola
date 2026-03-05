@@ -91,7 +91,7 @@ Responsabilidades:
 - Mostrar resultados y mensajes de error
 
 
-# Tecnologías utilizadas
+## Tecnologías utilizadas
 
 - **Java**
 - API `java.time` (LocalDate, LocalTime)
@@ -99,7 +99,7 @@ Responsabilidades:
 - Estructuras de datos (`ArrayList`)
 
 
-# Posibles mejoras futuras
+## Posibles mejoras futuras
 
 - Persistencia con **base de datos**
 - Interfaz gráfica (JavaFX / Swing)
@@ -108,7 +108,7 @@ Responsabilidades:
 - Manejo de múltiples salas o recursos
 
 
-# Autor
+## Autor
 
 Israel Liranzo
 
