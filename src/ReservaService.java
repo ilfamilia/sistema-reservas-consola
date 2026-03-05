@@ -2,11 +2,18 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+/*
+ * Capa de servicio: concentra la lógica de negocio del sistema de reservas.
+ * - Mantiene las reservas en memoria (ArrayList) como sustituto de una BD.
+ * - Aplica reglas: no fechas pasadas, horario permitido, intervalos de 30 min y no solapamientos.
+ * - Expone "ultimoError" para que la capa de UI (Main) pueda informar al usuario.
+ */
 public class ReservaService {
 
     private ArrayList<Reserva> reservas;
     private String ultimoError;
 
+    // Reglas de negocio para disponibilidad/creación de reservas
     private static final LocalTime HORA_APERTURA = LocalTime.of(8, 0);
     private static final LocalTime HORA_CIERRE = LocalTime.of(18, 0);
     private static final int INTERVALO_MINUTOS = 30;
@@ -15,18 +22,24 @@ public class ReservaService {
         reservas = new ArrayList<>();
     }
 
+    /*
+     * Crea una reserva si cumple todas las reglas de negocio.
+     * En caso de fallo, deja un mensaje explicativo en ultimoError.
+     */
     public boolean crearReserva(Reserva r) {
         if (r == null) {
             ultimoError = "La reserva es null.";
             return false;
         }
 
+        // En un sistema real este ID lo controlaría la BD; aquí se valida por consistencia.
         if (buscarReserva(r.getId()) != null) {
             ultimoError = "Ya existe una reserva con ese ID.";
             return false;
         }
 
         if (!esFechaHoraValida(r.getFecha(), r.getHora())) {
+            // Se distingue el motivo para dar feedback claro al usuario.
             if (!esHorarioPermitido(r.getHora())) {
                 ultimoError = "Horario no permitido. Solo se aceptan reservas de 08:00 a 18:00.";
             } else if (!esIntervaloValido(r.getHora())) {
@@ -37,6 +50,7 @@ public class ReservaService {
             return false;
         }
 
+        // Regla: no se permiten dos reservas con la misma fecha y hora.
         if (hayConflicto(r.getFecha(), r.getHora(), null)) {
             ultimoError = "Ya existe una reserva en ese horario.";
             return false;
@@ -46,6 +60,10 @@ public class ReservaService {
         return true;
     }
 
+    /*
+     * Búsqueda por ID en memoria (O(n)). Para este proyecto es suficiente.
+     * En una BD esto sería una consulta por clave primaria.
+     */
     public Reserva buscarReserva(int id) {
         for (Reserva r : reservas) {
             if (r.getId() == id) {
@@ -56,6 +74,10 @@ public class ReservaService {
         return null;
     }
 
+    /*
+     * Actualiza los datos de una reserva existente.
+     * La validación de conflicto ignora el mismo ID para evitar que "choque consigo misma".
+     */
     public boolean actualizarReserva(int id, String nombre, LocalDate fecha, LocalTime hora) {
 
         Reserva r = buscarReserva(id);
@@ -101,10 +123,20 @@ public class ReservaService {
         return true;
     }
 
+    /*
+     * Devuelve una copia para evitar que la capa de UI modifique la lista interna.
+     */
     public ArrayList<Reserva> listarReservas() {
         return new ArrayList<>(reservas);
     }
 
+    /*
+     * Genera los "slots" disponibles en una fecha, respetando:
+     * - horario de apertura/cierre
+     * - intervalos fijos de 30 minutos
+     * - slots ya ocupados por reservas existentes
+     * - si la fecha es hoy, omite horas ya pasadas
+     */
     public ArrayList<LocalTime> obtenerHorariosDisponibles(LocalDate fecha) {
         ArrayList<LocalTime> disponibles = new ArrayList<>();
         if (fecha == null) {
@@ -137,6 +169,10 @@ public class ReservaService {
     }
 
 
+    /*
+     * Validación centralizada de fecha/hora.
+     * Nota: el mensaje específico se asigna en crear/actualizar para dar feedback más preciso.
+     */
     private boolean esFechaHoraValida(LocalDate fecha, LocalTime hora) {
         if (fecha == null || hora == null) return false;
 
@@ -146,10 +182,8 @@ public class ReservaService {
 
         LocalDate hoy = LocalDate.now();
 
-        // Fecha pasada
         if (fecha.isBefore(hoy)) return false;
 
-        // Si es hoy, la hora debe ser ahora o después
         if (fecha.isEqual(hoy)) {
             LocalTime ahora = LocalTime.now();
             if (hora.isBefore(ahora)) return false;
@@ -175,6 +209,10 @@ public class ReservaService {
         return ultimoError;
     }
 
+    /*
+     * Detecta si existe una reserva en el mismo día y hora.
+     * idAIgnorar se usa al actualizar para no considerar la reserva que se está editando.
+     */
     private boolean hayConflicto(LocalDate fecha, LocalTime hora, Integer idAIgnorar) {
         for (Reserva r : reservas) {
             boolean mismoHorario = r.getFecha().isEqual(fecha) && r.getHora().equals(hora);
