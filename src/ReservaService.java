@@ -9,6 +9,7 @@ public class ReservaService {
 
     private static final LocalTime HORA_APERTURA = LocalTime.of(8, 0);
     private static final LocalTime HORA_CIERRE = LocalTime.of(18, 0);
+    private static final int INTERVALO_MINUTOS = 30;
 
     public ReservaService() {
         reservas = new ArrayList<>();
@@ -103,6 +104,33 @@ public class ReservaService {
     public ArrayList<Reserva> listarReservas() {
         return new ArrayList<>(reservas);
     }
+
+    public ArrayList<LocalTime> obtenerHorariosDisponibles(LocalDate fecha) {
+        ArrayList<LocalTime> disponibles = new ArrayList<>();
+        if (fecha == null) {
+            ultimoError = "La fecha no puede ser null.";
+            return disponibles;
+        }
+
+        LocalTime slot = HORA_APERTURA;
+        while (!slot.isAfter(HORA_CIERRE)) {
+
+            if (fecha.isEqual(LocalDate.now()) && slot.isBefore(LocalTime.now())) {
+                slot = slot.plusMinutes(INTERVALO_MINUTOS);
+                continue;
+            }
+
+            if (!hayConflicto(fecha, slot, null)) {
+                disponibles.add(slot);
+            }
+
+            slot = slot.plusMinutes(INTERVALO_MINUTOS);
+        }
+
+        ultimoError = null;
+        return disponibles;
+    }
+
 
     private boolean esFechaHoraValida(LocalDate fecha, LocalTime hora) {
         if (fecha == null || hora == null) return false;

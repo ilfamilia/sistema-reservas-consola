@@ -129,7 +129,30 @@ public class Main {
                     break;
                 }
 
-                case 6:
+                case 6: {
+                    System.out.println("\n--- Horarios disponibles ---");
+                    LocalDate fecha = leerFecha(sc, "Año: ", "Mes: ", "Día: ");
+
+                    ArrayList<LocalTime> disponibles = service.obtenerHorariosDisponibles(fecha);
+
+                    if (disponibles.isEmpty()) {
+                        System.out.println("\nNo hay horarios disponibles para esa fecha.");
+                        String err = service.getUltimoError();
+                        if (err != null) System.out.println(err);
+                    } else {
+                        System.out.println("\nFecha: " + fecha);
+                        System.out.println("Disponibles (" + disponibles.size() + "):");
+                        for (LocalTime t : disponibles) {
+                            System.out.println(t);
+                        }
+                    }
+
+                    pausa(sc);
+                    
+                    break;
+                }
+
+                case 7:
                     System.out.println("\nSaliendo...");
                     break;
 
@@ -138,7 +161,7 @@ public class Main {
                     pausa(sc);
             }
 
-        } while (opcion != 6);
+        } while (opcion != 7);
     }
 
     private static void mostrarMenu() {
@@ -150,7 +173,8 @@ public class Main {
         System.out.println("3) Buscar reserva");
         System.out.println("4) Modificar reserva");
         System.out.println("5) Eliminar reserva");
-        System.out.println("6) Salir");
+        System.out.println("6) Ver horarios disponibles");
+        System.out.println("7) Salir");
         System.out.println();
     }
 
