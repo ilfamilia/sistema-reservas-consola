@@ -148,7 +148,7 @@ public class Main {
                     }
 
                     pausa(sc);
-                    
+
                     break;
                 }
 

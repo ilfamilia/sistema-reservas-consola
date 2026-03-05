@@ -112,6 +112,11 @@ public class ReservaService {
             return disponibles;
         }
 
+        if (fecha.isBefore(LocalDate.now())) {
+            ultimoError = "No se pueden consultar horarios de una fecha pasada.";
+            return disponibles;
+        }
+
         LocalTime slot = HORA_APERTURA;
         while (!slot.isAfter(HORA_CIERRE)) {
 
