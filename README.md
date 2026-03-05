@@ -5,7 +5,6 @@ El sistema permite crear, consultar, actualizar y eliminar reservas, aplicando r
 
 Este proyecto fue desarrollado con fines de **aprendizaje y práctica de programación orientada a objetos**.
 
----
 
 ## Cómo ejecutar el proyecto
 
@@ -15,7 +14,6 @@ Este proyecto fue desarrollado con fines de **aprendizaje y práctica de program
 
 El sistema se ejecutará en consola mostrando el menú interactivo.
 
----
 
 ## Funcionalidades
 
@@ -35,7 +33,6 @@ Cada reserva contiene:
 - Fecha
 - Hora
 
----
 
 ## Reglas del sistema
 
@@ -48,7 +45,6 @@ El sistema aplica varias validaciones para asegurar la consistencia de las reser
     - Ejemplo: `08:00`, `08:30`, `09:00`, `09:30`
 - No se permiten **dos reservas en la misma fecha y hora**
 
----
 
 ## Estructura del proyecto
 
@@ -66,7 +62,6 @@ Contiene:
 
 Incluye validaciones básicas en los setters.
 
----
 
 ### ReservaService
 Contiene la **lógica de negocio del sistema**.
@@ -83,7 +78,6 @@ Responsabilidades:
 
 También mantiene un campo `ultimoError` para informar al usuario cuando una operación falla.
 
----
 
 ### Main
 Actúa como **interfaz de usuario en consola**.
@@ -96,7 +90,6 @@ Responsabilidades:
 - Llamar a `ReservaService`
 - Mostrar resultados y mensajes de error
 
----
 
 # Tecnologías utilizadas
 
@@ -105,7 +98,6 @@ Responsabilidades:
 - Programación Orientada a Objetos
 - Estructuras de datos (`ArrayList`)
 
----
 
 # Posibles mejoras futuras
 
@@ -115,7 +107,6 @@ Responsabilidades:
 - Validaciones más avanzadas de disponibilidad
 - Manejo de múltiples salas o recursos
 
----
 
 # Autor
 
