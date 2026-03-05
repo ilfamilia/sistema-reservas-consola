@@ -4,6 +4,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/*
+ * Punto de entrada del programa (UI en consola).
+ * Esta clase solo se encarga de:
+ * - mostrar el menú
+ * - leer y validar entradas del usuario
+ * - llamar a ReservaService (donde vive la lógica de negocio)
+ */
 public class Main {
     public static void main(String[] args) {
 
@@ -11,12 +18,20 @@ public class Main {
 
         ReservaService service = new ReservaService();
 
+        /*
+         * Datos de prueba para poder usar el sistema sin crear reservas manualmente.
+         * Útil durante desarrollo y pruebas rápidas.
+         */
         service.crearReserva(new Reserva("Steve Vai", LocalDate.of(2027, 3, 12), LocalTime.of(10, 30)));
         service.crearReserva(new Reserva("Jimi Hendrix", LocalDate.of(2027, 5, 21), LocalTime.of(13, 0)));
         service.crearReserva(new Reserva("Stephen Curry", LocalDate.of(2028, 3, 8), LocalTime.of(17, 30)));
 
         int opcion;
 
+        /*
+         * Bucle principal del programa:
+         * muestra el menú, ejecuta la opción y repite hasta "Salir".
+         */
         do {
             mostrarMenu();
             opcion = leerEntero(sc, "Seleccione una opción: ");
@@ -31,6 +46,7 @@ public class Main {
 
                     Reserva r = new Reserva(nombre, fecha, hora);
 
+                    // La validación real (horarios, intervalos, conflicto, fechas pasadas) ocurre en el service.
                     boolean operacionValida = service.crearReserva(r);
 
                     if (operacionValida) {
@@ -85,6 +101,7 @@ public class Main {
                     System.out.println("\n--- Modificar reserva ---");
                     int id = leerEntero(sc, "ID de reserva a actualizar: ");
 
+                    // Se verifica existencia antes de pedir nuevos datos para evitar trabajo innecesario al usuario.
                     Reserva actual = service.buscarReserva(id);
 
                     if (actual == null) {
@@ -136,6 +153,7 @@ public class Main {
                     System.out.println("\n--- Horarios disponibles ---");
                     LocalDate fecha = leerFecha(sc, "Año: ", "Mes: ", "Día: ");
 
+                    // Genera y muestra los slots disponibles (apertura/cierre, intervalo 30 min y sin choques).
                     ArrayList<LocalTime> disponibles = service.obtenerHorariosDisponibles(fecha);
 
                     if (disponibles.isEmpty()) {
@@ -181,6 +199,10 @@ public class Main {
         System.out.println();
     }
 
+    /*
+     * Lectura robusta de enteros: evita que entradas inválidas rompan el flujo del programa.
+     * Se usa nextLine() para prevenir problemas típicos de Scanner con saltos de línea.
+     */
     private static int leerEntero(Scanner sc, String mensaje) {
         while (true) {
             System.out.print(mensaje);
@@ -203,6 +225,10 @@ public class Main {
         }
     }
 
+    /*
+     * Se solicita la fecha por partes (año/mes/día) para permitir validaciones y evitar errores de formato.
+     * LocalDate.of(...) lanza DateTimeException si la fecha no existe (ej: 31/02).
+     */
     private static LocalDate leerFecha(Scanner sc, String mensaje1, String mensaje2, String mensaje3) {
         while (true) {
 
@@ -233,6 +259,10 @@ public class Main {
         }
     }
 
+    /*
+     * Lectura de hora por partes (hora/minutos) para mantener el control de validación.
+     * LocalTime.of(...) lanza DateTimeException si la hora es inválida.
+     */
     private static LocalTime leerHora(Scanner sc, String mensaje1, String mensaje2) {
         while (true) {
 
@@ -259,6 +289,9 @@ public class Main {
         }
     }
 
+    /*
+     * Pausa para mejorar la experiencia en consola, permitiendo leer resultados antes de volver al menú.
+     */
     private static void pausa(Scanner sc) {
         System.out.print("\nPresiona Enter para continuar...");
         sc.nextLine();
